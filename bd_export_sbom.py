@@ -20,10 +20,9 @@ logging.basicConfig(
     format="[%(asctime)s] {%(module)s:%(lineno)d} %(levelname)s - %(message)s"
 )
 
-
 parser = argparse.ArgumentParser("A program to create a SBOM report for a given project-version")
-parser.add_argument("bd_url", help="Hub server URL e.g. https://your.blackduck.url")
-parser.add_argument("token_file", help="containing access token")
+parser.add_argument("blackduck_url", help="Hub server URL e.g. https://your.blackduck.url")
+parser.add_argument("blackduck_api_token_file", help="containing access token")
 parser.add_argument("project_name")
 parser.add_argument("version_name")
 parser.add_argument("-t", "--type", type=str, nargs='?', default="SPDX_22", choices=["SPDX_22", "CYCLONEDX_13", "CYCLONEDX_14"], help="Choose the type of SBOM report")
@@ -64,10 +63,10 @@ def check_report_status(bd_client, location, retries=args.retries):
     else:
         logging.info(f"report {report_id} is still not generated")
 
-with open(args.token_file, 'r') as tf:
+with open(args.blackduck_api_token_file, 'r') as tf:
     access_token = tf.readline().strip()
 
-bd = Client(base_url=args.bd_url, token=access_token, verify=args.verify)
+bd = Client(base_url=args.blackduck_url, token=access_token, verify=args.verify)
 
 params = {
     'q': [f"name:{args.project_name}"]
