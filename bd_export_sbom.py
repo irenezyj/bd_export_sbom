@@ -21,9 +21,6 @@ logging.basicConfig(
 )
 
 
-default_zip_file_name = "sbom.zip"
-default_dsbom_file_name = "d-sbom.json"
-
 parser = argparse.ArgumentParser("A program to create a SBOM report for a given project-version")
 parser.add_argument("bd_url", help="Hub server URL e.g. https://your.blackduck.url")
 parser.add_argument("token_file", help="containing access token")
