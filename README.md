@@ -1,13 +1,10 @@
-# Synopsys Black Duck - bd_export_spdx22_json.py v0.24
-# DEPRECATION NOTICE
+# Synopsys Black Duck - bd_export_sbom.py version 1.0
 
-The functionality of this script has been superceded by features in standard Black Duck, which should be used for SPDX export going forward. SPDX and CycloneDX export is supported within Project Versions under the Report tab.
+This script is for generating SBOM report (SPDX2.2, CycloneDX 1.3, CycloneDX 1.4) from blackduck server
 
 # OVERVIEW
 
-This script is provided under an OSS license (specified in the LICENSE file) to allow users to export SPDX version 2.2 in JSON format from Black Duck projects.
-
-It does not represent any extension of licensed functionality of Synopsys software itself and is provided as-is, without warranty or liability.
+This script is provided under an OSS license (specified in the LICENSE file) to allow users to export SBOM reports in various formats from Black Duck projects.
 
 If you have comments or issues, please raise a GitHub issue here. Synopsys support is not able to respond to support tickets for this OSS utility.
 
@@ -25,36 +22,6 @@ The optional `--recursive` option will traverse sub-projects to include all leaf
 
 Other options can be specified to reduce the number of API calls to speed up script execution.
 
-# LATEST UPDATES
-
-## Version 0.24
-
-Fixed issue with API limits introduced in 2022.2.
-
-## Version 0.23
-
-Added option --exclude_ignored_components (or -x) to exclude ignored components
-
-## Version 0.22
-
-Minor fix for projects in projects
-
-## Version 0.19-0.20 Async
-
-Making all component data requests async delivering additional 2-3x overall speed improvements
-
-## Version 0.18 Async
-
-Addressed Windows error related to asyncio sessions
-
-## Version 0.14-0.17 Async
-
-Refactored the script to multiple modules and some other minor changes
-
-## Version 0.13 Async
-
-Changes to improve JSON formatting, minimum SPDX required fields, add package supplier info in custom field.
-
 ## Version 0.12 Async
 
 This version uses the aiohttp library to perform asynchronous download of component data, reducing the time to process projects by 3x to 6x.
@@ -69,7 +36,7 @@ This version uses the aiohttp library to perform asynchronous download of compon
 
 Install the package using the command:
 
-        pip3 install bd-export-spdx2.2
+        pip3 install bd-export-sbom
 
 # USAGE
 
