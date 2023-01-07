@@ -20,6 +20,10 @@ logging.basicConfig(
     level=logging.DEBUG,
     format="[%(asctime)s] {%(module)s:%(lineno)d} %(levelname)s - %(message)s"
 )
+logging.basicConfig(format='%(asctime)s:%(levelname)s:%(message)s', stream=sys.stderr, level=logging.DEBUG)
+logging.getLogger("requests").setLevel(logging.WARNING)
+logging.getLogger("urllib3").setLevel(logging.WARNING)
+logging.getLogger("blackduck").setLevel(logging.WARNING)
 
 parser = argparse.ArgumentParser("A program to create a SBOM report for a given project-version")
 parser.add_argument("blackduck_url", help="Hub server URL e.g. https://your.blackduck.url")
@@ -32,7 +36,16 @@ parser.add_argument('-r', '--retries', default=10, type=int, help="How many time
 parser.add_argument('-s', '--sleep_time', default=5, type=int, help="The amount of time to sleep in-between (re-)tries to check report status")
 parser.add_argument('--no-verify', dest='verify', action='store_false', help="disable TLS certificate verification")
 
+
 args = parser.parse_args()
+
+if args.type == "SPDX_22" and args.format not in ["YAML", "RDF", "TAGVALUE"]:
+    logging.error(f"Wrong combined report type: {args.type} and report format: {args.format}")
+    sys.exit(2)
+
+if (args.type == "CYCLONEDX_13" or args.type == "CYCLONEDX_14") and args.format != "JSON":
+    logging.error(f"Wrong combined report type: {args.type} and report format: {args.format}")
+    sys.exit(2)
 
 url = os.environ.get('BLACKDUCK_URL')
 if args.blackduck_url:
@@ -40,24 +53,7 @@ if args.blackduck_url:
 
 api_token = os.environ.get('BLACKDUCK_API_TOKEN')
 if args.blackduck_api_token:
-    api_token = args.blackduck_api_token
-
-logging.info(f"api_token = {api_token}") 
-    
-
-if args.type == "SPDX_22" and args.format not in ["YAML", "RDF", "TAGVALUE"]:
-    print(f"Wrong combined report type: {args.type} and report format: {args.format}")
-    sys.exit(2)
-
-if (args.type == "CYCLONEDX_13" or args.type == "CYCLONEDX_14") and args.format != "JSON":
-    print(f"Wrong combined report type: {args.type} and report format: {args.format}")
-    sys.exit(2)
-
-   
-logging.basicConfig(format='%(asctime)s:%(levelname)s:%(message)s', stream=sys.stderr, level=logging.DEBUG)
-logging.getLogger("requests").setLevel(logging.WARNING)
-logging.getLogger("urllib3").setLevel(logging.WARNING)
-logging.getLogger("blackduck").setLevel(logging.WARNING)
+    api_token = args.blackduck_api_token    
 
 def check_report_status(bd_client, location, retries=args.retries):
     report_id = location.split("/")[-1]

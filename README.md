@@ -66,4 +66,4 @@ Use the `--blackduck_trust_certs` option to trust the SSL certificate on the Bla
 
 # Example
 
-python3 bd_export_sbom.py https://localhost ~/token/apitoken tut1 1 --type CYCLONEDX_13 --format JSON --no-verify
+python3 bd_export_sbom.py https://localhost [api token] tut3 1 --type CYCLONEDX_13 --format JSON --no-verify
