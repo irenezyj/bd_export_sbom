@@ -21,9 +21,6 @@ The output file in SPDX report (JSON, YAML, RDF, TAGVALUE) or CycloneDX report (
 
 Other options can be specified to reduce the number of API calls to speed up script execution.
 
-## Version 0.12 Async
-
-This version uses the aiohttp library to perform asynchronous download of component data, reducing the time to process projects by 3x to 6x.
 
 # PREREQUISITES
 
@@ -60,10 +57,11 @@ The program can be invoked as follows:
                                Trust Black Duck server certificates if unsigned
          -h, --help            show this help message and exit
          -v, --version         Print script version and exit
-         -o OUTPUT, --output OUTPUT
-                               Output SPDX file name (SPDX JSON format) - default '<proj>-<ver>.json'
+         -t, --type            SBOM report type ["SPDX_22", "CYCLONEDX_13", "CYCLONEDX_14"]
+         -f, --format          Report format SPDX ["JSON", "YAML", "RDF", "TAGVALUE"], CycloneDx ["JSON"] (default = JSON)
+         -r, --retries,        How many times to retry checking report status (default = 10)
+         -s, --sleep_time,     The amount of time to sleep in-between (re-)tries to check report status (default=5)
          --debug               Add reporting of processed components
-
 
 If `project_name` does not match a single project then all matching projects will be listed and the script will terminate.
 
