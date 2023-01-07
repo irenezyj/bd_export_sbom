@@ -14,6 +14,7 @@ import json
 import logging
 import sys
 import time
+import os
 
 logging.basicConfig(
     level=logging.DEBUG,
@@ -22,7 +23,7 @@ logging.basicConfig(
 
 parser = argparse.ArgumentParser("A program to create a SBOM report for a given project-version")
 parser.add_argument("blackduck_url", help="Hub server URL e.g. https://your.blackduck.url")
-parser.add_argument("blackduck_api_token_file", help="file containing access token")
+parser.add_argument("blackduck_api_token", help="blackduck api access token")
 parser.add_argument("project_name")
 parser.add_argument("version_name")
 parser.add_argument("-t", "--type", type=str, nargs='?', default="SPDX_22", choices=["SPDX_22", "CYCLONEDX_13", "CYCLONEDX_14"], help="Choose the type of SBOM report")
@@ -32,6 +33,17 @@ parser.add_argument('-s', '--sleep_time', default=5, type=int, help="The amount 
 parser.add_argument('--no-verify', dest='verify', action='store_false', help="disable TLS certificate verification")
 
 args = parser.parse_args()
+
+url = os.environ.get('BLACKDUCK_URL')
+if args.blackduck_url:
+    url = args.blackduck_url
+
+api_token = os.environ.get('BLACKDUCK_API_TOKEN')
+if args.blackduck_api_token:
+    api_token = args.blackduck_api_token
+
+logging.info(f"api_token = {api_token}") 
+    
 
 if args.type == "SPDX_22" and args.format not in ["YAML", "RDF", "TAGVALUE"]:
     print(f"Wrong combined report type: {args.type} and report format: {args.format}")
@@ -63,10 +75,7 @@ def check_report_status(bd_client, location, retries=args.retries):
     else:
         logging.info(f"report {report_id} is still not generated")
 
-with open(args.blackduck_api_token_file, 'r') as tf:
-    access_token = tf.readline().strip()
-
-bd = Client(base_url=args.blackduck_url, token=access_token, verify=args.verify)
+bd = Client(base_url=url, token=api_token, verify=args.verify)
 
 params = {
     'q': [f"name:{args.project_name}"]

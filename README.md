@@ -26,7 +26,9 @@ Other options can be specified to reduce the number of API calls to speed up scr
 
 1. Pip 3 must be installed.
 
-2. Set up blackduck api token
+2. Set the BLACKDUCK_URL and BLACKDUCK_API_TOKEN environment variables to connect to the Black Duck server (alternatively use the --blackduck_url and --blackduck_api_token options)
+
+
 
 # USAGE
 
@@ -45,7 +47,7 @@ The program can be invoked as follows:
        other arguments:
          --blackduck_url BLACKDUCK_URL
                                Black Duck server URL including https://
-         --blackduck_api_token_file
+         --blackduck_api_token
                                Black Duck API token
          -t, --type            SBOM report type ["SPDX_22", "CYCLONEDX_13", "CYCLONEDX_14"]
          -f, --format          Report format SPDX ["JSON", "YAML", "RDF", "TAGVALUE"], CycloneDx ["JSON"] (default = JSON)
