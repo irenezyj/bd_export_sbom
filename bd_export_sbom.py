@@ -22,7 +22,7 @@ logging.basicConfig(
 
 parser = argparse.ArgumentParser("A program to create a SBOM report for a given project-version")
 parser.add_argument("blackduck_url", help="Hub server URL e.g. https://your.blackduck.url")
-parser.add_argument("blackduck_api_token_file", help="containing access token")
+parser.add_argument("blackduck_api_token_file", help="file containing access token")
 parser.add_argument("project_name")
 parser.add_argument("version_name")
 parser.add_argument("-t", "--type", type=str, nargs='?', default="SPDX_22", choices=["SPDX_22", "CYCLONEDX_13", "CYCLONEDX_14"], help="Choose the type of SBOM report")

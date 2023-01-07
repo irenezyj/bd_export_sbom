@@ -26,37 +26,27 @@ Other options can be specified to reduce the number of API calls to speed up scr
 
 1. Pip 3 must be installed.
 
-1. Set the BLACKDUCK_URL and BLACKDUCK_API_TOKEN environment variables to connect to the Black Duck server (alternatively use the `--blackduck_url` and `--blackduck_api_token` options)
-
-# INSTALLATION
-
-Install the package using the command:
-
-        pip3 install bd-export-sbom
+2. Set up blackduck api token
 
 # USAGE
 
 The program can be invoked as follows:
 
-       usage: bd-export-spdx [-h] [-v] [-o OUTPUT] [-r] [--download_loc] [--no_copyrights] [--no_files] [-b] [--blackduck_url BLACKDUCK_URL]
-                               [--blackduck_api_token BLACKDUCK_API_TOKEN] [--blackduck_trust_certs]
+       usage: bd_export_sbom   [--blackduck_url BLACKDUCK_URL]
+                               [--blackduck_api_token_file BLACKDUCK_API_TOKEN]
                                project_name project_version
 
        Export SPDX JSON format file for the given project and version
 
        positional arguments:
          project_name          Black Duck project name
-         project_version       Black Duck version name
+         version_name          Black Duck version name
 
        other arguments:
          --blackduck_url BLACKDUCK_URL
                                Black Duck server URL including https://
-         --blackduck_api_token BLACKDUCK_API_TOKEN
+         --blackduck_api_token_file
                                Black Duck API token
-         --blackduck_trust_certs
-                               Trust Black Duck server certificates if unsigned
-         -h, --help            show this help message and exit
-         -v, --version         Print script version and exit
          -t, --type            SBOM report type ["SPDX_22", "CYCLONEDX_13", "CYCLONEDX_14"]
          -f, --format          Report format SPDX ["JSON", "YAML", "RDF", "TAGVALUE"], CycloneDx ["JSON"] (default = JSON)
          -r, --retries,        How many times to retry checking report status (default = 10)
@@ -71,11 +61,7 @@ The script will use the environment variables BLACKDUCK_URL and BLACKDUCK_API_TO
 
 Use the `--blackduck_trust_certs` option to trust the SSL certificate on the Black Duck server if unsigned.
 
-The `--output out_file` or `-o out_file` option specifies the output file. If this file already exists, the previous version will be renamed with a unique number (e.g. .001). The default file name `<project>-<version>.spdx` will be used if not specified.
 
+# Example
 
-# PACKAGE SUPPLIER NAME CONFIGURATION
-
-For custom components in the BOM, users will need to manually populate this.
-Create a custom fields for 'BOM Component' entries with name 'PackageSupplier' and type 'Text'.
-Updating the custom field for custom (or KB) components will replace the value in the output SPDX file.
+python3 bd_export_sbom.py https://localhost ~/token/apitoken tut1 1 --type CYCLONEDX_13 --format JSON --no-verify
